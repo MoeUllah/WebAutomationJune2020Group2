@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Geico Test Script" parallel="false">
+
+    <parameter name="useCloudEnv" value="false"></parameter>
+    <parameter name="cloudEnvName" value="browserstack"></parameter>
+    <parameter name="url" value="http://amazon.com"></parameter>
+    <parameter name="os" value="Windows"></parameter>
+    <parameter name="os_version" value="10"></parameter>
+    <parameter name="browserName" value="chrome"></parameter>
+    <parameter name="browserVersion" value="84.0"></parameter>
+
+    <test name="Geico Pages">
+
+        <classes>
+
+            <class name="GeicoPagesTest.HomePageTest"></class>
+
+        </classes>
+
+    </test>
+
+</suite>
