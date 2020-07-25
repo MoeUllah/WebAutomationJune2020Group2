@@ -15,7 +15,7 @@
     <test name="Facebook Pages">
 
         <classes>
-            <class name="FacebookPagesTest.HomePageTest"/>
+            <class name="facebookpagestest."/>
         </classes>
 
     </test>

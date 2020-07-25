@@ -1,15 +1,15 @@
 package Base;
 
 import Utilities.TimeOutSettings;
-import com.beust.jcommander.Parameter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
@@ -27,7 +27,7 @@ public class CommonAPI {
     public String browserStackAccessKey = "";
     public String sauceLabsUserName = "";
     public String sauceLabsAccessKey = "";
-    public WebDriver driver = null;
+    public static WebDriver driver = null;
 
     @Parameters({"useCloudEnv","cloudEnvName","url","os","os_version","browserName","browserVersion"})
     @BeforeMethod
@@ -42,7 +42,7 @@ public class CommonAPI {
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().pageLoadTimeout(TimeOutSettings.PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
         driver.manage().timeouts().implicitlyWait(TimeOutSettings.IMPLICIT_WAIT, TimeUnit.SECONDS);
-        driver.get(url);
+        driver.navigate().to(url);
         driver.manage().window().maximize();
     }
 
@@ -210,59 +210,46 @@ public class CommonAPI {
         }
         driver.switchTo().window(parentWindow);
     }
+    public void clearInputField(WebElement element){
+        element.clear();
+    }
+
+    public static void navigateBack(){
+        driver.navigate().back();
+    }
+
+    //Synchronization
+//    public static void waitUntilClickAble(By locator) {
+//        WebDriverWait wait = new WebDriverWait(driver, 10);
+//        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+//    }
+//
+//    public static void waitUntilVisible(By locator) {
+//        WebDriverWait wait = new WebDriverWait(driver, 10);
+//        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+//    }
+//
+//    public static void waitUntilSelectable(By locator) {
+//        WebDriverWait wait = new WebDriverWait(driver, 10);
+//        boolean element = wait.until(ExpectedConditions.elementToBeSelected(locator));
+//    }
+
+    public static void waitUntilClickAble(WebElement locator) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    public static void waitUntilVisible(WebElement locator) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement element = wait.until(ExpectedConditions.visibilityOf(locator));
+    }
+
+    public static void waitUntilSelectable(WebElement locator) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        boolean element = wait.until(ExpectedConditions.elementToBeSelected(locator));
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //        String parentWindow=driver.getWindowHandle();
-//        Actions act=new Actions(driver);
-//        for(WebElement newLink:allLinks){
-//            String openTabs=Keys.chord(Keys.CONTROL,Keys.ENTER);
-//            act.moveToElement(newLink).sendKeys(openTabs).build().perform();;
-//            }
-//        Set<String> allWindows=driver.getWindowHandles();
-//        int windowsCount=allWindows.size();
-//        System.out.println("Total amount of windows are "+ windowsCount+".");
-//        for(String childWindow:allWindows){
-//            if(!parentWindow.equalsIgnoreCase(childWindow)){
-//                driver.switchTo().window(childWindow);
-//                driver.getTitle();
-//                driver.close();
-//            }
-//        }
-//        driver.switchTo().window(parentWindow);
 
 
 

@@ -15,7 +15,7 @@
 
         <classes>
 
-            <class name="GeicoPagesTest.HomePageTest"></class>
+            <class name="geicopagestest.TestAllFeatures"></class>
 
         </classes>
 

@@ -16,7 +16,7 @@
 
         <classes>
 
-            <class name="AmazonPagesTest.HomePageTest"/>
+            <class name="amazonpagestest.TestAllFeatures"/>
 
         </classes>
 
