@@ -1,5 +1,11 @@
 package amazonpages;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import Base.CommonAPI;
+
 public class HomePage {
 
     //Start from HomePage add the WebElement(s) for the page with the methods of those elements. Add more pages as your
@@ -23,6 +29,57 @@ public class HomePage {
     //6)Ill fix up the database part and excel. But for database to retrieve from database you need to make your
     //own methods based on the object you are trying to get if any.
 
+    @FindBy(css=".nav-search-scope.nav-sprite")
+    public static WebElement allDropDownWebElement;
+
+    @FindBy(how= How.ID,using = "twotabsearchtextbox")
+    public static WebElement searchBarWebElement;
+
+    @FindBy(how= How.CSS,using = "#nav-link-accountList > div > span")
+    public static WebElement signInWebElement;
+
+    @FindBy(how=How.CSS,using = ".hm-icon.nav-sprite")
+    public static WebElement hamburgerIconDropDown;
+
+    @FindBy(css="#nav-search > form > div.nav-right > div > input")
+    public static WebElement submitMagnifyingGlassButton;
+
+    public static WebElement getAllDropDownWebElement() {
+        return allDropDownWebElement;
+    }
+
+    public static WebElement getSearchBarWebElement() {
+        return searchBarWebElement;
+    }
+
+    public static WebElement getSignInWebElement() {
+        return signInWebElement;
+    }
+
+    public static WebElement getHamburgerIconDropDown() {
+        return hamburgerIconDropDown;
+    }
+
+    public SignInPage goToSignUpPage(WebDriver driver){
+        signInWebElement.click();
+        return new SignInPage(driver);
+    }
+
+    public SearchResultPage enterSearchQueryOnSearchBar(WebDriver driver,String valueToSearch){
+        CommonAPI.typeOnElement(searchBarWebElement,valueToSearch);
+        return new SearchResultPage(driver);
+    }
+
+    public void clickOnAllDropDownMenu(){
+        allDropDownWebElement.click();
+    }
+
+    public void clickOnHamburgerIconMenu(){
+        hamburgerIconDropDown.click();
+    }
+    public static void clickSubmit(){
+        submitMagnifyingGlassButton.click();
+    }
 }
 
 

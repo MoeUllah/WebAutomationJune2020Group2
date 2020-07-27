@@ -39,7 +39,7 @@ public class CommonAPI {
         } else if (useCloudEnv.equalsIgnoreCase("false")){
             getLocalDriver(os,browserName);
         }
-        driver.manage().deleteAllCookies();
+        //driver.manage().deleteAllCookies();
         driver.manage().timeouts().pageLoadTimeout(TimeOutSettings.PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
         driver.manage().timeouts().implicitlyWait(TimeOutSettings.IMPLICIT_WAIT, TimeUnit.SECONDS);
         driver.navigate().to(url);
@@ -104,16 +104,16 @@ public class CommonAPI {
         driver.quit();
     }
 
-    public void clickOnElement(WebElement element) {
+    public static void clickOnElement(WebElement element) {
         element.click();
     }
 
 
-    public void typeOnElement(WebElement element,String valueToType) {
+    public static void typeOnElement(WebElement element,String valueToType) {
         element.sendKeys(valueToType, Keys.ENTER);
     }
 
-    public void clickByAttributeValue(List<WebElement> elementList, String attribute, String myAttributeValue) {
+    public static void clickByAttributeValue(List<WebElement> elementList, String attribute, String myAttributeValue) {
 
         for (WebElement element : elementList) {
             String value = element.getAttribute(attribute);
@@ -125,14 +125,14 @@ public class CommonAPI {
 
     }
 
-    public List<WebElement> SelectList(WebElement element) {
+    public static List<WebElement> SelectList(WebElement element) {
 
         Select select = new Select(element);
         List<WebElement> selectList = select.getOptions();
         return selectList;
     }
 
-    public List getListOfStringText(List<WebElement> elementList, String nameOfList) {
+    public static List getListOfStringText(List<WebElement> elementList, String nameOfList) {
         List elementTextList = new ArrayList();
         int listSize = elementList.size();
         System.out.println("Total " + nameOfList + " count is " + listSize);
@@ -144,7 +144,7 @@ public class CommonAPI {
         return elementTextList;
     }
 
-    public void selectAValue(List<WebElement> elementList, String mySelectionValue) {
+    public static void selectAValue(List<WebElement> elementList, String mySelectionValue) {
         for (WebElement element : elementList) {
             String selectValue = element.getText();
             if (selectValue.equalsIgnoreCase(mySelectionValue)) {
@@ -154,7 +154,7 @@ public class CommonAPI {
         }
     }
 
-    public List ascendingListOfText(List<WebElement> elementList) {
+    public static List ascendingListOfText(List<WebElement> elementList) {
         List actualList = new ArrayList();
         for (WebElement element : elementList) {
             String text = element.getText();
@@ -166,7 +166,7 @@ public class CommonAPI {
         return temp;
     }
 
-    public List descendingListOfText(List<WebElement> elementList) {
+    public static List descendingListOfText(List<WebElement> elementList) {
         List actualList = new ArrayList();
         for (WebElement element : elementList) {
             String text = element.getText();
@@ -178,25 +178,25 @@ public class CommonAPI {
         return temp;
     }
 
-    public String acceptAlert() {
+    public static String acceptAlert() {
         Alert alert = driver.switchTo().alert();
         String actualAlertText = alert.getText();
         alert.accept();
         return actualAlertText;
     }
 
-    public void frameSwitch(WebElement element) {
+    public static void frameSwitch(WebElement element) {
         driver.switchTo().frame(element);
 
     }
 
-    public void numberOfLinks() {
+    public static void numberOfLinks() {
         List<WebElement> allLinks = driver.findElements(By.tagName("a"));
         int linkCount = allLinks.size();
         System.out.println("Total amount of links are " + linkCount);
     }
 
-    public void closePopupWindows() {
+    public static void closePopupWindows() {
         String parentWindow = driver.getWindowHandle();
         Set<String> allWindows = driver.getWindowHandles();
         int windowsCount = allWindows.size();
@@ -210,7 +210,7 @@ public class CommonAPI {
         }
         driver.switchTo().window(parentWindow);
     }
-    public void clearInputField(WebElement element){
+    public static void clearInputField(WebElement element){
         element.clear();
     }
 
@@ -219,20 +219,20 @@ public class CommonAPI {
     }
 
     //Synchronization
-//    public static void waitUntilClickAble(By locator) {
-//        WebDriverWait wait = new WebDriverWait(driver, 10);
-//        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
-//    }
-//
-//    public static void waitUntilVisible(By locator) {
-//        WebDriverWait wait = new WebDriverWait(driver, 10);
-//        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-//    }
-//
-//    public static void waitUntilSelectable(By locator) {
-//        WebDriverWait wait = new WebDriverWait(driver, 10);
-//        boolean element = wait.until(ExpectedConditions.elementToBeSelected(locator));
-//    }
+    public static void waitUntilClickAble(By locator) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    public static void waitUntilVisible(By locator) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    public static void waitUntilSelectable(By locator) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        boolean element = wait.until(ExpectedConditions.elementToBeSelected(locator));
+    }
 
     public static void waitUntilClickAble(WebElement locator) {
         WebDriverWait wait = new WebDriverWait(driver, 10);

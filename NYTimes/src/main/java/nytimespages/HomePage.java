@@ -1,5 +1,6 @@
 package nytimespages;
 
+
 public class HomePage {
 
 
@@ -23,4 +24,8 @@ public class HomePage {
     //if you clone this it should be good.
     //6)Ill fix up the database part and excel. But for database to retrieve from database you need to make your
     //own methods based on the object you are trying to get if any.
+
+
+
+
 }

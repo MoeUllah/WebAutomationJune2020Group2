@@ -11,6 +11,8 @@
     <parameter name="os_version" value="10"></parameter>
     <parameter name="browserName" value="chrome"></parameter>
     <parameter name="browserVersion" value="84.0"></parameter>
+<!--    <parameter name="email" value="automationJune2020@gmail.com"></parameter>-->
+<!--    <parameter name="password" value="automation123"></parameter>-->
 
     <test name="Amazon Pages">
 
