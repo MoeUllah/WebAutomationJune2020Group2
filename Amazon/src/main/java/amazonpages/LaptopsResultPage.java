@@ -27,19 +27,26 @@ public class LaptopsResultPage {
     @FindBy(css="#hlb-ptc-btn-native")
     public static WebElement proceedToCheckout2;
 
-    private void clickAddToCart(){
+    @FindBy(css="#nav-tools>a:nth-of-type(5)")
+    public static WebElement cartIcon;
+
+    public void clickAddToCart(){
         addToCartButton.click();
     }
 
     public void goToCheckOut(){
         clickAddToCart();
-//        if(noThanksWarrantyButton.isDisplayed()){
-//            CommonAPI.waitUntilClickAble(noThanksWarrantyButton);
-//            noThanksWarrantyButton.click();
-//            proceedToCheckout.click();
-//        }
-//        else
+        try {
+            CommonAPI.waitUntilClickAble(noThanksWarrantyButton);
+            noThanksWarrantyButton.click();
+            proceedToCheckout.click();
+        }catch(Exception ex) {
             proceedToCheckout2.click();
+        }
+    }
 
+    public CartPage goToCartPage(WebDriver driver){
+        cartIcon.click();
+        return new CartPage(driver);
     }
 }

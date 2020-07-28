@@ -11,4 +11,6 @@ public class AppsGamesPage {
         this.driver=driver;
         PageFactory.initElements(driver,this);
     }
+
+
 }

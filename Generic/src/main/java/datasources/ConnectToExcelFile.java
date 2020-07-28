@@ -20,28 +20,28 @@ public class ConnectToExcelFile {
     public static FileOutputStream fio = null;
     public static int numberOfRows, numberOfCol, rowNum;
 
-//    public static String[][] fileReader1(String path,int sheetIndex) throws IOException {
-//        String[][] data = {};
-//        File file = new File(path);
-//        try (FileInputStream fis = new FileInputStream(file)) {
-//            wb = new HSSFWorkbook(fis);
-//            sheet = wb.getSheetAt(sheetIndex);
-//            numberOfRows = sheet.getLastRowNum();
-//            numberOfCol = sheet.getRow(0).getLastCellNum();
-//            data = new String[numberOfRows + 1][numberOfCol + 1];
-//
-//            for (int i = 1; i < data.length; i++) {
-//                HSSFRow rows = sheet.getRow(i);
-//                for (int j = 0; j < numberOfCol; j++) {
-//                    HSSFCell cell = rows.getCell(j);
-//                    String cellData = getCellValue(cell);
-//                    data[i][j] = cellData;
-//                }
-//            }
-//            wb.close();
-//            return data;
-//        }
-//    }
+    public static String[][] fileReader1(String path,int sheetIndex) throws IOException {
+        String[][] data = {};
+        File file = new File(path);
+        try (FileInputStream fis = new FileInputStream(file)) {
+            wb = new HSSFWorkbook(fis);
+            sheet = wb.getSheetAt(sheetIndex);
+            numberOfRows = sheet.getLastRowNum();
+            numberOfCol = sheet.getRow(0).getLastCellNum();
+            data = new String[numberOfRows + 1][numberOfCol + 1];
+
+            for (int i = 1; i < data.length; i++) {
+                HSSFRow rows = sheet.getRow(i);
+                for (int j = 0; j < numberOfCol; j++) {
+                    HSSFCell cell = rows.getCell(j);
+                    String cellData = getCellValue(cell);
+                    data[i][j] = cellData;
+                }
+            }
+            wb.close();
+            return data;
+        }
+    }
 
     public static String[] fileReader2(String path, int sheetIndex) throws IOException {
         String[] data = {};
@@ -53,7 +53,7 @@ public class ConnectToExcelFile {
             numberOfCol = sheet.getRow(0).getLastCellNum();
             data = new String[numberOfRows + 1];
 
-            for (int i = 0; i < data.length; i++) {
+            for (int i = 1; i < data.length; i++) {
                 HSSFRow rows = sheet.getRow(i);
                 for (int j = 0; j < numberOfCol; j++) {
                     HSSFCell cell = rows.getCell(j);

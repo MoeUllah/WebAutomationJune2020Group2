@@ -14,6 +14,9 @@ public class LaptopsPage {
         PageFactory.initElements(driver,this);
     }
 
+    @FindBy(css="img[alt='Essential laptop']")
+    public WebElement essentialLaptopPicture;
+
     @FindBy(css="img[alt='Everyday laptop']")
     public WebElement everydayLaptopPicture;
 
@@ -25,4 +28,10 @@ public class LaptopsPage {
         clickEverydayLaptopPicture();
         return new LaptopsResultPage(driver);
     }
+
+    public LaptopsResultPage clickEssentialLaptopPicture(){
+        essentialLaptopPicture.click();
+        return new LaptopsResultPage(driver);
+    }
+
 }

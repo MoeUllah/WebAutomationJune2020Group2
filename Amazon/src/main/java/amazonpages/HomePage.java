@@ -77,6 +77,7 @@ public class HomePage {
     public void clickOnHamburgerIconMenu(){
         hamburgerIconDropDown.click();
     }
+
     public static void clickSubmit(){
         submitMagnifyingGlassButton.click();
     }

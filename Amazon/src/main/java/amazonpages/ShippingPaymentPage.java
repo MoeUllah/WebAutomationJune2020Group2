@@ -1,12 +1,23 @@
 package amazonpages;
 
+import Base.CommonAPI;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 public class ShippingPaymentPage {
 
-    @FindBy(how= How.ID,using = "#enterAddressFullName")
+    private WebDriver driver;
+
+    public ShippingPaymentPage(WebDriver driver){
+        this.driver=driver;
+        PageFactory.initElements(driver,this);
+    }
+
+    @FindBy(how= How.CSS,using = "#enterAddressFullName")
     public static WebElement fullNameInputBox;
 
     @FindBy(css="#identity-add-new-address > div:nth-of-type(3)")
@@ -86,5 +97,89 @@ public class ShippingPaymentPage {
 
     @FindBy(css=".a-button-close")
     public WebElement xButtonTopRight;
-    
+
+    public void enterFullName(){
+        fullNameInputBox.clear();
+        fullNameInputBox.sendKeys("Happy");
+    }
+
+    public void enterAddress1(){
+        address1InputBox.sendKeys("720 RUGBY RD");
+        address1InputBox.sendKeys(Keys.TAB,"3C");
+    }
+
+    public void enterCity(){
+        cityInputBox.sendKeys("Brooklyn");
+    }
+
+    public void enterState(){
+        stateInputBox.sendKeys("NY");
+    }
+
+    public void enterZipCode(){
+        zipInputBox.sendKeys("11230-2410");
+    }
+
+    public void pickCountry(){
+        countryInputBox.click();
+    }
+
+    public void enterPhoneNumber(){
+        phoneNumberInputBox.sendKeys("718-865-7321");
+    }
+
+    public void writeTextBox(){
+        textBox.sendKeys("No, that should be it.");
+    }
+
+    public void enterSecurityCode(){
+        securityCodeInputBox.sendKeys("4567");
+    }
+
+    public void weekendDeliveryOptions(){
+        weekendDeliveryExpander.click();
+        saturdayCheckBox.click();
+        sundayCheckBox.click();
+    }
+
+    public void clickYes(){
+        yesRadioButton.click();
+    }
+
+    public void continueButton(){
+        continueButton.click();
+    }
+
+    public void setShippingAddress(){
+        enterFullName();
+        enterAddress1();
+        enterCity();
+        enterState();
+        enterZipCode();pickCountry();
+        enterPhoneNumber();
+        writeTextBox();
+        enterSecurityCode();
+        weekendDeliveryOptions();
+        clickYes();
+        continueButton();
+    }
+
+    public void pickDeliveryOption(){
+        deliveryOptionRadioButton.click();
+        continueButtonTop.click();
+    }
+
+    public void addNewCard(){
+        addNewCard.click();
+        CommonAPI.frameSwitch(addCardFrame);
+        cardNumberInputBox.sendKeys("4578564325678734");
+        nameOnCardInputBox.sendKeys("Happy Automation");
+        expirationMonthArrowDown.click();
+        month10.click();
+        expirationYearArrowDown.click();
+        year2024.click();
+        defaultPaymentCheckBox.click();
+        addCardButton.click();
+        xButtonTopRight.click();
+    }
 }

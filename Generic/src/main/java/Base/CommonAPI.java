@@ -28,6 +28,7 @@ public class CommonAPI {
     public String sauceLabsUserName = "";
     public String sauceLabsAccessKey = "";
     public static WebDriver driver = null;
+    public static String urlHome;
 
     @Parameters({"useCloudEnv","cloudEnvName","url","os","os_version","browserName","browserVersion"})
     @BeforeMethod
@@ -39,11 +40,12 @@ public class CommonAPI {
         } else if (useCloudEnv.equalsIgnoreCase("false")){
             getLocalDriver(os,browserName);
         }
-        //driver.manage().deleteAllCookies();
+
         driver.manage().timeouts().pageLoadTimeout(TimeOutSettings.PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
         driver.manage().timeouts().implicitlyWait(TimeOutSettings.IMPLICIT_WAIT, TimeUnit.SECONDS);
         driver.navigate().to(url);
         driver.manage().window().maximize();
+        urlHome=driver.getCurrentUrl();
     }
 
     public WebDriver getLocalDriver(String os, String browserName){
