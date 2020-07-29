@@ -2,9 +2,12 @@ package amazonpages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import Base.CommonAPI;
+
+import java.util.List;
 
 public class HomePage {
 
@@ -32,6 +35,9 @@ public class HomePage {
     @FindBy(css=".nav-search-scope.nav-sprite")
     public static WebElement allDropDownWebElement;
 
+    @FindAll({@FindBy( css="#searchDropdownBox option")})
+    public static List<WebElement> allDropDownMenu;
+
     @FindBy(how= How.ID,using = "twotabsearchtextbox")
     public static WebElement searchBarWebElement;
 
@@ -43,6 +49,28 @@ public class HomePage {
 
     @FindBy(css="#nav-search > form > div.nav-right > div > input")
     public static WebElement submitMagnifyingGlassButton;
+
+    @FindBy(how=How.CLASS_NAME,using = "nav-sprite nav-logo-base")
+    public static WebElement amazonLogo;
+
+    @FindBy(how=How.ID,using = "nav-link-prime")
+    public static WebElement tryPrimeButton;
+
+    @FindBy(how=How.CLASS_NAME,using = "a-popover-trigger")
+    public static WebElement deliverToButton;
+
+    @FindBy(how=How.CSS,using = "navFooterMoreOnAmazon a")
+    public static WebElement amazonFooterTableUnderLogo;
+
+    @FindBy(how=How.CSS,using = ".icp-container-desktop a:nth-of-type(1)")
+    public static WebElement pickLanguageFooter;
+
+    @FindBy(how=How.CSS,using = ".icp-container-desktop a:nth-of-type(2)")
+    public static WebElement pickCountryFooter;
+
+    @FindBy(how=How.CLASS_NAME,using = "navFooterBackToTopText")
+    public static WebElement backToTop;
+
 
     public static WebElement getAllDropDownWebElement() {
         return allDropDownWebElement;

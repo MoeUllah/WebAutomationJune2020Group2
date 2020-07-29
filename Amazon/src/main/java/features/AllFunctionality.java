@@ -17,6 +17,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 import java.io.IOException;
+import java.util.List;
 
 public class AllFunctionality {
 
@@ -33,6 +34,16 @@ public class AllFunctionality {
     LaptopsResultPage laptopsResultPage;
     ShippingPaymentPage shippingPaymentPage;
     CartPage cartPage;
+
+    //HomePage test cases
+
+    public void getListAllDropDownMenu(WebDriver driver) {
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        List<String> allMenuList = CommonAPI.getListOfStringText(HomePage.allDropDownMenu, "All-Drop-Down");
+        for (String st : allMenuList) {
+            System.out.println(st);
+        }
+    }
 
     public void buyLaptopUsingAllMenu(WebDriver driver){
         homePage= PageFactory.initElements(driver,HomePage.class);
