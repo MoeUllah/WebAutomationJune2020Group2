@@ -133,8 +133,8 @@ public class AllFunctionality {
     public void signInToAmazon(WebDriver driver){
         homePage= PageFactory.initElements(driver,HomePage.class);
         signInPage=homePage.goToSignUpPage(driver);
-        signInPage.enterEmailAddress("automationJune2020@gmail.com");
-        signInPage.enterPassword("automation123");
+        signInPage.enterEmailAddress("yourEmail");
+        signInPage.enterPassword("yourPassword");
         boolean amazonLogoIsDisplyed=verifyAmazonLogoDisplayed(driver);
         boolean expectingTrue=true;
         Assert.assertEquals(amazonLogoIsDisplyed,expectingTrue);
@@ -250,8 +250,8 @@ public class AllFunctionality {
         signInPage=PageFactory.initElements(driver,SignInPage.class);
         shippingPaymentPage=PageFactory.initElements(driver,ShippingPaymentPage.class);
         homePage.goToSignUpPage(driver);
-        signInPage.enterEmailAddress("automationJune2020@gmail.com");
-        signInPage.enterPassword("automation123");
+        signInPage.enterEmailAddress("yourEmail");
+        signInPage.enterPassword("yourPassword");
         homePage.clickOnAllDropDownMenu();
         allsDropDownPage.goToComputerPage(driver);
         computerPage.goToLaptopPage(driver);

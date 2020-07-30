@@ -12,8 +12,8 @@
     <parameter name="browserName" value="chrome"></parameter>
     <parameter name="browserVersion" value="84.0"></parameter>
 <!--    <parameter name="selectionValue" value="Women"></parameter>-->
-<!--    <parameter name="email" value="automationJune2020@gmail.com"></parameter>-->
-<!--    <parameter name="password" value="automation123"></parameter>-->
+<!--    <parameter name="email" value="yourEmail"></parameter>-->
+<!--    <parameter name="password" value="yourEmailPassword"></parameter>-->
 
     <test name="Amazon Pages">
 
