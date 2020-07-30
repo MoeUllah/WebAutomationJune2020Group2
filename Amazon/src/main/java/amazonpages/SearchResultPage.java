@@ -27,6 +27,9 @@ public class SearchResultPage {
     @FindBy(css="#acrPopover>span:first-child>a>i:first-child>span")
     public static WebElement productStarRating;
 
+    public String getTitleSearchPage(){
+        return driver.getTitle();
+    }
     public void clickFirstPicture(){
         try {
             firstPictureSponsor.click();

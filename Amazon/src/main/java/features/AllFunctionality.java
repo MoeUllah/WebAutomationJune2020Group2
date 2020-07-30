@@ -5,7 +5,6 @@ import Base.CommonAPI;
 import amazonpages.*;
 import amazonpages.AllDropDownMenu.ComputerPage;
 import com.mongodb.client.FindIterable;
-import datasources.ConnectToExcelFile;
 import datasources.ConnectToMongoDB;
 import datasupply.FetchAccountsList;
 import datasupply.FetchGroceryList;
@@ -15,7 +14,6 @@ import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -34,16 +32,214 @@ public class AllFunctionality {
     LaptopsResultPage laptopsResultPage;
     ShippingPaymentPage shippingPaymentPage;
     CartPage cartPage;
+    String allSelectionValue="   Baby";
+    String selectAddressZipCodeHomePage="11230";
+    String selectCountryShipHomePage="Australia";
 
     //HomePage test cases
+    public void verifyFullTitle(WebDriver driver){
+        String actualTitle=driver.getTitle();
+        String expectedTitle="Amazon.com: Online Shopping for Electronics, Apparel, Computers, Books, DVDs & more";
+        Assert.assertEquals(expectedTitle,actualTitle);
+        System.out.println(actualTitle);
+    }
 
+    public void verifyPartialTitle(WebDriver driver){
+        Boolean actual=driver.getTitle().contains("Amazon.com: Online");
+        Boolean expected=true;
+        Assert.assertEquals(expected,actual);
+    }
+
+    public void getHomePageURL(WebDriver driver){
+        String actualHomeURL=driver.getCurrentUrl();
+        String expectedHomeURL="https://www.amazon.com/";
+        Assert.assertEquals(expectedHomeURL,actualHomeURL);
+        System.out.println(actualHomeURL);
+    }
+
+    public void getPageSourceHomePage(WebDriver driver){
+        String pageSource=driver.getPageSource();
+        boolean actual=pageSource.contains("<!doctype html>");
+        boolean expected=true;
+        System.out.println(pageSource);
+    }
     public void getListAllDropDownMenu(WebDriver driver) {
         homePage = PageFactory.initElements(driver, HomePage.class);
         List<String> allMenuList = CommonAPI.getListOfStringText(HomePage.allDropDownMenu, "All-Drop-Down");
-        for (String st : allMenuList) {
-            System.out.println(st);
+        String lastAllDropDownText=allMenuList.get(allMenuList.size()-1);
+        System.out.println("The last drop-down text is " + lastAllDropDownText);
+        String expectedText="Whole Foods Market";
+        Assert.assertEquals(expectedText,lastAllDropDownText);
+    }
+
+    public void DescendingListAllDropDownMenu(WebDriver driver){
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        List<String> descendingAllMenu=CommonAPI.descendingListOfText(HomePage.allDropDownMenu);
+        String firstAllDropDownText=descendingAllMenu.get(0);
+        System.out.println("The first drop-down text in descending order is " + firstAllDropDownText);
+        String expectedText="Women";
+        Assert.assertEquals(expectedText,firstAllDropDownText);
+    }
+
+    public void AscendingListAllDropDownMenu(WebDriver driver){
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        List<String> ascendingAllMenu=CommonAPI.ascendingListOfText(HomePage.allDropDownMenu);
+        String firstAllDropDownText=ascendingAllMenu.get(0);
+        System.out.println("The first drop-down text in ascending order is " + firstAllDropDownText);
+        String expectedText="Alexa Skills";
+        Assert.assertEquals(expectedText,firstAllDropDownText);
+    }
+
+    public void getAllDropDownMenuCount(WebDriver driver){
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        int actualSize=HomePage.allDropDownMenu.size();
+        System.out.println("The All-Drop-Down menu has a size of " + actualSize);
+        int expectedSize=59;
+        Assert.assertEquals(expectedSize,actualSize);
+    }
+
+    public void selectAValueAllDropDown(WebDriver driver){
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        CommonAPI.selectAValue(HomePage.allDropDownWebElement, allSelectionValue);
+        String actual=HomePage.allDropDownSearchLabel.getText();
+        String expected=allSelectionValue;
+        Assert.assertEquals(expected,actual);
+    }
+
+    public void amazonSearchExcel(WebDriver driver) throws IOException {
+        FetchGroceryList fetchGroceryList=new FetchGroceryList();
+        String [] groceries=fetchGroceryList.getDataFromExcelFile();
+        homePage= PageFactory.initElements(driver,HomePage.class);
+        for(int i=1;i<groceries.length;i++) {
+            String grocery=groceries[i];
+            HomePage.searchBarWebElement.clear();
+            searchResultPage= homePage.enterSearchQueryOnSearchBar(driver,grocery);
+            System.out.println(searchResultPage.getTitleSearchPage());
+            Boolean actual=searchResultPage.getTitleSearchPage().contains(groceries[i]);
+            Boolean expected=true;
+            Assert.assertEquals(expected,actual);
+            driver.navigate().back();
         }
     }
+
+    public boolean verifyAmazonLogoDisplayed(WebDriver driver){
+        homePage= PageFactory.initElements(driver,HomePage.class);
+        boolean isDisplayedActual=HomePage.amazonLogo.isDisplayed();
+        boolean isDisplayedExpected=true;
+        Assert.assertEquals(isDisplayedExpected,isDisplayedActual);
+        return isDisplayedActual;
+    }
+
+    public void signInToAmazon(WebDriver driver){
+        homePage= PageFactory.initElements(driver,HomePage.class);
+        signInPage=homePage.goToSignUpPage(driver);
+        signInPage.enterEmailAddress("automationJune2020@gmail.com");
+        signInPage.enterPassword("automation123");
+        boolean amazonLogoIsDisplyed=verifyAmazonLogoDisplayed(driver);
+        boolean expectingTrue=true;
+        Assert.assertEquals(amazonLogoIsDisplyed,expectingTrue);
+    }
+
+    public void getHamburgerDropDownLinks(WebDriver driver) {
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        homePage.clickOnHamburgerIconMenu();
+        List<String> hamburgerMenuLinksList = CommonAPI.getListOfStringText(HomePage.hamburgerDropDownLinksMenu, "Hamburger-Drop-Down links");
+        System.out.println(hamburgerMenuLinksList.size());
+        String lastHamburgerDropDownLink=hamburgerMenuLinksList.get(hamburgerMenuLinksList.size()-1);
+        System.out.println("The last Hamburger-Drop-Down link is " + lastHamburgerDropDownLink);
+        String expectedText="Sign In";
+        Assert.assertEquals(expectedText,lastHamburgerDropDownLink);
+    }
+
+    public void DescListHamburgerDDLinks(WebDriver driver){
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        homePage.clickOnHamburgerIconMenu();
+        List<String> descHamburgerLinks=CommonAPI.descendingListOfText(HomePage.hamburgerDropDownLinksMenu);
+        String firstHamburgerDDLink=descHamburgerLinks.get(0);
+        System.out.println("The first drop-down text in descending order is " + firstHamburgerDDLink);
+        String expectedText="Your Account";
+        Assert.assertEquals(expectedText,firstHamburgerDDLink);
+    }
+
+    public void AscListHamburgerDDLinks(WebDriver driver){
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        homePage.clickOnHamburgerIconMenu();
+        List<String> AscHamburgerLinks=CommonAPI.ascendingListOfText(HomePage.hamburgerDropDownLinksMenu);
+        String firstHamburgerDDLink=AscHamburgerLinks.get(0);
+        System.out.println("The first drop-down text in ascending order is " + firstHamburgerDDLink);
+        String expectedText="#FoundItOnAmazon";
+        Assert.assertEquals(expectedText,firstHamburgerDDLink);
+    }
+
+    public void getHamburgerDDLinksCount(WebDriver driver){
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        homePage.clickOnHamburgerIconMenu();
+        int actualSize=HomePage.hamburgerDropDownLinksMenu.size();
+        System.out.println("The Hamburger-Drop-Down menu has " + actualSize + " links.");
+        try{
+            int expectedSize=46;
+            Assert.assertEquals(expectedSize,actualSize);
+        }catch(Throwable ex) {
+            try {
+                int expectedSize = 47;
+                Assert.assertEquals(expectedSize, actualSize);
+        }catch(Throwable ex1){
+                   int expectedSize = 48;
+                   Assert.assertEquals(expectedSize, actualSize);
+            }
+        }
+
+    }
+
+    public void selectYourUSAddressZip(WebDriver driver) throws InterruptedException {
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        homePage.clickSelectAddressButton();
+        homePage.typeUSZipCode(selectAddressZipCodeHomePage);
+        homePage.clickApplyButton();
+        homePage.clickDoneButton();
+        Thread.sleep(2000);
+        boolean containsZip=HomePage.selectAddressButton.getText().contains(selectAddressZipCodeHomePage);
+        boolean expected=true;
+        System.out.println(HomePage.selectAddressButton.getText());
+        Assert.assertEquals(expected,containsZip);
+    }
+
+    public void selectAddressShippingOutside(WebDriver driver) throws InterruptedException {
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        homePage.clickSelectAddressButton();
+        homePage.clickShipOutsideUS(selectCountryShipHomePage);
+        homePage.clickDoneButton();
+        Thread.sleep(2000);
+        boolean containsZip=HomePage.selectAddressButton.getText().contains(selectCountryShipHomePage);
+        boolean expected=true;
+        System.out.println(HomePage.selectAddressButton.getText());
+        Assert.assertEquals(expected,containsZip);
+    }
+
+    public void amazonSearchExcel1(WebDriver driver) throws IOException {
+        FetchGroceryList fetchGroceryList=new FetchGroceryList();
+        String [] groceries=fetchGroceryList.getDataFromExcelFile();
+        homePage= PageFactory.initElements(driver,HomePage.class);
+        searchResultPage=PageFactory.initElements(driver,SearchResultPage.class);
+        for(int i=1;i<groceries.length;i++) {
+            String grocery=groceries[i];
+            HomePage.searchBarWebElement.clear();
+            homePage.enterSearchQueryOnSearchBar(driver,grocery);
+            System.out.println(driver.getTitle());
+            Boolean actual=driver.getTitle().contains(grocery);
+            Boolean expected=true;
+            Assert.assertEquals(expected,actual);
+            searchResultPage.clickFirstPicture();
+            searchResultPage.getProductTitle();
+            String rating=searchResultPage.getProductRating();
+            Boolean actual1=rating.contains("stars");
+            Boolean expected1=true;
+            Assert.assertEquals(actual1,expected1);
+            driver.navigate().back();
+            driver.navigate().back();
+        }
+    }
+
 
     public void buyLaptopUsingAllMenu(WebDriver driver){
         homePage= PageFactory.initElements(driver,HomePage.class);
@@ -81,30 +277,6 @@ public class AllFunctionality {
         laptopsResultPage.goToCartPage(driver);
         cartPage.deleteFromCart();
         driver.navigate().to(CommonAPI.urlHome);
-    }
-
-    public void amazonSearchExcel(WebDriver driver) throws IOException {
-        FetchGroceryList fetchGroceryList=new FetchGroceryList();
-        String [] groceries=fetchGroceryList.getDataFromExcelFile();
-        homePage= PageFactory.initElements(driver,HomePage.class);
-        searchResultPage=PageFactory.initElements(driver,SearchResultPage.class);
-        for(int i=1;i<groceries.length;i++) {
-            String grocery=groceries[i];
-            HomePage.searchBarWebElement.clear();
-            homePage.enterSearchQueryOnSearchBar(driver,grocery);
-            System.out.println(driver.getTitle());
-            Boolean actual=driver.getTitle().contains(grocery);
-            Boolean expected=true;
-            Assert.assertEquals(expected,actual);
-            searchResultPage.clickFirstPicture();
-            searchResultPage.getProductTitle();
-            String rating=searchResultPage.getProductRating();
-            Boolean actual1=rating.contains("stars");
-            Boolean expected1=true;
-            Assert.assertEquals(actual1,expected1);
-            driver.navigate().back();
-            driver.navigate().back();
-        }
     }
 
     public void createAccountsDB(WebDriver driver) throws IOException {
@@ -147,17 +319,68 @@ public class AllFunctionality {
     public void select(String featureName, WebDriver driver)throws InterruptedException,IOException{
         switch(featureName){
             //your case statements for your methods(steps from excel file) goes here
-            case "buyLaptopUsingAllMenu":
-                buyLaptopUsingAllMenu(driver);
+            case "verifyFullTitle":
+                verifyFullTitle(driver);
+                break;
+            case "verifyPartialTitle":
+                verifyPartialTitle(driver);
+                break;
+            case "getHomePageURL":
+                getHomePageURL(driver);
+                break;
+            case "getPageSourceHomePage":
+                getPageSourceHomePage(driver);
+                break;
+            case "getListAllDropDownMenu":
+                getListAllDropDownMenu(driver);
+                break;
+            case "DescendingListAllDropDownMenu":
+                DescendingListAllDropDownMenu(driver);
+                break;
+            case "AscendingListAllDropDownMenu":
+                AscendingListAllDropDownMenu(driver);
+                break;
+            case "getAllDropDownMenuCount":
+                getAllDropDownMenuCount(driver);
+                break;
+            case "selectAValueAllDropDown":
+                selectAValueAllDropDown(driver);
                 break;
             case "amazonSearchExcel":
                 amazonSearchExcel(driver);
                 break;
-            case "editCart":
-                editCart(driver);
+            case "verifyAmazonLogoDisplayed":
+                verifyAmazonLogoDisplayed(driver);
+                break;
+            case "signInToAmazon":
+                signInToAmazon(driver);
+                break;
+            case "getHamburgerDropDownLinks":
+                getHamburgerDropDownLinks(driver);
+                break;
+            case "DescListHamburgerDDLinks":
+                DescListHamburgerDDLinks(driver);
+                break;
+            case "AscListHamburgerDDLinks":
+                AscListHamburgerDDLinks(driver);
+                break;
+            case "getHamburgerDDLinksCount":
+                getHamburgerDDLinksCount(driver);
+                break;
+            case "selectYourUSAddressZip":
+                selectYourUSAddressZip(driver);
+                break;
+            case "selectAddressShippingOutside":
+                selectAddressShippingOutside(driver);
                 break;
             case "createAccountsDB":
                 createAccountsDB(driver);
+                break;
+            case "buyLaptopUsingAllMenu":
+                buyLaptopUsingAllMenu(driver);
+                break;
+            case "editCart":
+                editCart(driver);
                 break;
             default:
                 throw new InvalidArgumentException("Invalid features choice");

@@ -32,8 +32,14 @@ public class HomePage {
     //6)Ill fix up the database part and excel. But for database to retrieve from database you need to make your
     //own methods based on the object you are trying to get if any.
 
-    @FindBy(css=".nav-search-scope.nav-sprite")
+//    @FindBy(css=".nav-search-scope.nav-sprite")
+//    public static WebElement allDropDownWebElement;
+
+    @FindBy(css="#searchDropdownBox")
     public static WebElement allDropDownWebElement;
+
+    @FindBy(css="span.nav-search-label")
+    public static WebElement allDropDownSearchLabel;
 
     @FindAll({@FindBy( css="#searchDropdownBox option")})
     public static List<WebElement> allDropDownMenu;
@@ -47,17 +53,38 @@ public class HomePage {
     @FindBy(how=How.CSS,using = ".hm-icon.nav-sprite")
     public static WebElement hamburgerIconDropDown;
 
+    @FindAll({@FindBy(css=".hmenu.hmenu-visible a")})
+    public static List<WebElement> hamburgerDropDownLinksMenu;
+
+    @FindBy(css=".hmenu.hmenu-visible>li:nth-of-type(2)")
+    public static WebElement primeVideoOptionHamburgerDD;
+
     @FindBy(css="#nav-search > form > div.nav-right > div > input")
     public static WebElement submitMagnifyingGlassButton;
 
-    @FindBy(how=How.CLASS_NAME,using = "nav-sprite nav-logo-base")
+    @FindBy(how=How.CSS,using = ".nav-sprite.nav-logo-base")
     public static WebElement amazonLogo;
 
     @FindBy(how=How.ID,using = "nav-link-prime")
     public static WebElement tryPrimeButton;
 
-    @FindBy(how=How.CLASS_NAME,using = "a-popover-trigger")
-    public static WebElement deliverToButton;
+    @FindBy(how=How.CSS,using = "#glow-ingress-block>span:last-child")
+    public static WebElement selectAddressButton;
+
+    @FindBy(how=How.CSS,using = "#GLUXCountryList")
+    public static WebElement shipOutsideUSPullDown;
+
+    @FindBy(how=How.CSS,using = "ul.a-list-link>li:first-child>a")
+    public static WebElement australiaOption;
+
+    @FindBy(how=How.ID,using = "GLUXZipUpdateInput")
+    public static WebElement zipCodeUSBox;
+
+    @FindBy(how=How.CSS,using = "#GLUXZipUpdate > span > input")
+    public static WebElement applyButton;
+
+    @FindBy(how=How.CSS,using = "button.a-button-text")
+    public static WebElement doneButton;
 
     @FindBy(how=How.CSS,using = "navFooterMoreOnAmazon a")
     public static WebElement amazonFooterTableUnderLogo;
@@ -104,10 +131,40 @@ public class HomePage {
 
     public void clickOnHamburgerIconMenu(){
         hamburgerIconDropDown.click();
+        CommonAPI.waitUntilVisible(HomePage.primeVideoOptionHamburgerDD);
     }
 
     public static void clickSubmit(){
         submitMagnifyingGlassButton.click();
+    }
+
+    public TryPrimePage goToTryPrimePage(WebDriver driver){
+        tryPrimeButton.click();
+        return new TryPrimePage(driver);
+    }
+
+    public void clickSelectAddressButton(){
+        selectAddressButton.click();
+    }
+
+    public void typeUSZipCode(String zipCode){
+        zipCodeUSBox.sendKeys(zipCode);
+    }
+
+    public void clickDoneButton(){
+        doneButton.click();
+    }
+
+    public void clickApplyButton(){
+        applyButton.click();
+    }
+
+    public void clickShipOutsideUS(String country){
+        CommonAPI.selectAValueGeneric(shipOutsideUSPullDown,country);
+    }
+
+    public void clickAustralia(){
+        australiaOption.click();
     }
 }
 

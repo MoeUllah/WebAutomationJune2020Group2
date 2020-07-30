@@ -127,17 +127,8 @@ public class CommonAPI {
 
     }
 
-    public static List<WebElement> SelectList(WebElement element) {
-
-        Select select = new Select(element);
-        List<WebElement> selectList = select.getOptions();
-        return selectList;
-    }
-
     public static List getListOfStringText(List<WebElement> elementList, String nameOfList) {
         List elementTextList = new ArrayList();
-        int listSize = elementList.size();
-        System.out.println("Total " + nameOfList + " count is " + listSize);
         for (WebElement element : elementList) {
             String elementText = element.getText();
             System.out.println(elementText);
@@ -146,11 +137,25 @@ public class CommonAPI {
         return elementTextList;
     }
 
-    public static void selectAValue(List<WebElement> elementList, String mySelectionValue) {
-        for (WebElement element : elementList) {
-            String selectValue = element.getText();
-            if (selectValue.equalsIgnoreCase(mySelectionValue)) {
-                element.click();
+    public static void selectAValue(WebElement element,String mySelectionValue) {
+        Select select = new Select(element);
+        List<WebElement> selectList = select.getOptions();
+        for (WebElement selectElement : selectList) {
+            String selectValue = selectElement.getText();
+                if(selectValue.equalsIgnoreCase(mySelectionValue)){
+                    selectElement.click();
+                    break;
+                }
+        }
+    }
+
+    public static void selectAValueGeneric(WebElement element,String mySelectionValue) {
+        Select select = new Select(element);
+        List<WebElement> selectList = select.getOptions();
+        for (WebElement selectElement : selectList) {
+            String selectValue = selectElement.getText().trim();
+            if(selectValue.equalsIgnoreCase(mySelectionValue)){
+                selectElement.click();
                 break;
             }
         }
@@ -159,24 +164,30 @@ public class CommonAPI {
     public static List ascendingListOfText(List<WebElement> elementList) {
         List actualList = new ArrayList();
         for (WebElement element : elementList) {
-            String text = element.getText();
+            String text = element.getText().trim();
             actualList.add(text);
         }
         List temp = new ArrayList();
         temp.addAll(actualList);
         Collections.sort(temp);
+        for(Object text:temp){
+            System.out.println(text);
+        }
         return temp;
     }
 
     public static List descendingListOfText(List<WebElement> elementList) {
         List actualList = new ArrayList();
         for (WebElement element : elementList) {
-            String text = element.getText();
+            String text = element.getText().trim();
             actualList.add(text);
         }
         List temp = new ArrayList();
         temp.addAll(actualList);
         Collections.sort(temp, Collections.reverseOrder());
+        for(Object text:temp){
+            System.out.println(text);
+        }
         return temp;
     }
 
@@ -251,10 +262,49 @@ public class CommonAPI {
         boolean element = wait.until(ExpectedConditions.elementToBeSelected(locator));
     }
 
+    public static void clickWithJS(WebElement element){
+        JavascriptExecutor executor=(JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].click();",element);
+    }
+
 }
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    public static List<WebElement> selectList(WebElement element) {
+//        Select select = new Select(element);
+//        List<WebElement> selectList = select.getOptions();
+//        return selectList;
+//    }
 
