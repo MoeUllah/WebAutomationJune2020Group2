@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import Base.CommonAPI;
+import base.CommonAPI;
 
 import java.util.List;
 
@@ -86,14 +86,26 @@ public class HomePage {
     @FindBy(how=How.CSS,using = "button.a-button-text")
     public static WebElement doneButton;
 
-    @FindBy(how=How.CSS,using = "navFooterMoreOnAmazon a")
-    public static WebElement amazonFooterTableUnderLogo;
+    @FindAll({@FindBy(how=How.CSS,using = ".navFooterMoreOnAmazon a")})
+    public static List<WebElement> amazonFooterTableUnderLogo;
 
     @FindBy(how=How.CSS,using = ".icp-container-desktop a:nth-of-type(1)")
     public static WebElement pickLanguageFooter;
 
+    @FindBy(how=How.CSS,using = ".a-column>div>div>div:nth-child(4)>div>label>i")
+    public static WebElement espanolRadioButton;
+
+    @FindBy(how=How.CSS,using = "#icp-btn-save>span")
+    public static WebElement saveChangesButton;
+
     @FindBy(how=How.CSS,using = ".icp-container-desktop a:nth-of-type(2)")
     public static WebElement pickCountryFooter;
+
+    @FindBy(how=How.CSS,using = "#icp-selected-country")
+    public static WebElement preferredCountryDropDown;
+
+    @FindBy(how=How.CSS,using = ".a-button.a-spacing-top-mini.a-button-primary input")
+    public static WebElement goToWebsiteButton;
 
     @FindBy(how=How.CLASS_NAME,using = "navFooterBackToTopText")
     public static WebElement backToTop;
@@ -166,6 +178,54 @@ public class HomePage {
     public void clickAustralia(){
         australiaOption.click();
     }
+
+    public void clickLanguageFooter(){
+        pickLanguageFooter.click();
+    }
+
+    public void clickEspanolRadioButton(){
+        espanolRadioButton.click();
+    }
+
+    public void clickSaveChangesButton(){
+        saveChangesButton.click();
+    }
+
+    public void clickCountryFooter(){
+        pickCountryFooter.click();
+    }
+
+    public void pickAustraliaPreferredCountry(String country){
+        CommonAPI.selectAValueGeneric(preferredCountryDropDown,country);
+    }
+
+    public void clickGoToWebsite(){
+        goToWebsiteButton.click();
+    }
+
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    @FindBy(how=How.CSS,using = "span.a-button-text.a-declarative")
+//    public static WebElement countryMenuDD;
+//
+//    @FindBy(how=How.CSS,using = ".a-nostyle.a-list-link>li:first-child")
+//    public static WebElement countryMenuAustraliaOption;

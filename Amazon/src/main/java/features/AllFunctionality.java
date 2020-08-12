@@ -1,7 +1,7 @@
 package features;
 
 
-import Base.CommonAPI;
+import base.CommonAPI;
 import amazonpages.*;
 import amazonpages.AllDropDownMenu.ComputerPage;
 import com.mongodb.client.FindIterable;
@@ -35,6 +35,7 @@ public class AllFunctionality {
     String allSelectionValue="   Baby";
     String selectAddressZipCodeHomePage="11230";
     String selectCountryShipHomePage="Australia";
+    String preferredCountry="Australia";
 
     //HomePage test cases
     public void verifyFullTitle(WebDriver driver){
@@ -216,6 +217,54 @@ public class AllFunctionality {
         Assert.assertEquals(expected,containsZip);
     }
 
+    public void switchTabsToAmazonFooterLinks(WebDriver driver){
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        CommonAPI.switchToTabsOfDiffLinks(HomePage.amazonFooterTableUnderLogo);
+        verifyFullTitle(driver);
+    }
+
+    public void getAmazonFooterLinkText(WebDriver driver){
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        List<String> footerLinksText=CommonAPI.getListOfStringText(HomePage.amazonFooterTableUnderLogo,"Amazon-Bottom-Footer links");
+        String actualLastFooterLinkText=footerLinksText.get(footerLinksText.size()-1);
+        String expectedtext="Amazon Second Chance" +"\n" + "Pass it on, trade it in," + "\n" + "give it a second life";
+        Assert.assertEquals(expectedtext,actualLastFooterLinkText);
+    }
+
+    public void click6pmFooterLink(WebDriver driver){
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        CommonAPI.clickByAttributeValue(HomePage.amazonFooterTableUnderLogo,"innerHTML","6pm");
+        String actual6pmLinkURL=driver.getCurrentUrl();
+        String expected6pmURL="https://www.6pm.com/";
+        Assert.assertEquals(expected6pmURL,actual6pmLinkURL);
+        System.out.println(driver.getCurrentUrl());
+    }
+
+    //not working
+    public void changeLanguageFooter(WebDriver driver) throws InterruptedException {
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        homePage.clickLanguageFooter();
+        homePage.clickEspanolRadioButton();
+        //boolean isSelected=HomePage.espanolRadioButton.isSelected();
+        homePage.clickSaveChangesButton();
+        //boolean expected=true;
+        Thread.sleep(5000);
+        String actualText=HomePage.pickLanguageFooter.getText();
+        String expectedText="Espanol";
+        Assert.assertEquals(actualText,expectedText);
+    }
+
+    public void changeCountryFooter(WebDriver driver) throws InterruptedException {
+        homePage = PageFactory.initElements(driver, HomePage.class);
+        homePage.clickCountryFooter();
+        homePage.pickAustraliaPreferredCountry(preferredCountry);
+        homePage.clickGoToWebsite();
+//        String actualURL=driver.getCurrentUrl();
+        String actualURL=CommonAPI.switchWindowGetTitle();
+        String expectedURL="https://www.amazon.com.au/?ref=icp_country_us_t1";
+        Assert.assertEquals(actualURL,expectedURL);
+    }
+
     public void amazonSearchExcel1(WebDriver driver) throws IOException {
         FetchGroceryList fetchGroceryList=new FetchGroceryList();
         String [] groceries=fetchGroceryList.getDataFromExcelFile();
@@ -372,6 +421,21 @@ public class AllFunctionality {
                 break;
             case "selectAddressShippingOutside":
                 selectAddressShippingOutside(driver);
+                break;
+            case "switchTabsToAmazonFooterLinks":
+                switchTabsToAmazonFooterLinks(driver);
+                break;
+            case "getAmazonFooterLinkText":
+                getAmazonFooterLinkText(driver);
+                break;
+            case "click6pmFooterLink":
+                click6pmFooterLink(driver);
+                break;
+            case "changeLanguageFooter":
+                changeLanguageFooter(driver);
+                break;
+            case "changeCountryFooter":
+                changeCountryFooter(driver);
                 break;
             case "createAccountsDB":
                 createAccountsDB(driver);

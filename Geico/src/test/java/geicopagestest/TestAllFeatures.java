@@ -1,6 +1,6 @@
 package geicopagestest;
 
-import Base.CommonAPI;
+import base.CommonAPI;
 import features.AllFunctionality;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;

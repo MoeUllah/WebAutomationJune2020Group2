@@ -3,6 +3,10 @@
 
 <suite name="Amazon Test Script" parallel="false">
 
+    <listeners>
+        <listener class-name="reporting.ExtentReportListener"/>
+        <listener class-name="retryanalyzer.RetryListenersClass"/>
+    </listeners>
 
     <parameter name="useCloudEnv" value="false"></parameter>
     <parameter name="cloudEnvName" value="browserstack"></parameter>
@@ -11,9 +15,9 @@
     <parameter name="os_version" value="10"></parameter>
     <parameter name="browserName" value="chrome"></parameter>
     <parameter name="browserVersion" value="84.0"></parameter>
-<!--    <parameter name="selectionValue" value="Women"></parameter>-->
-<!--    <parameter name="email" value="yourEmail"></parameter>-->
-<!--    <parameter name="password" value="yourEmailPassword"></parameter>-->
+    <!--    <parameter name="selectionValue" value="Women"></parameter>-->
+    <!--    <parameter name="email" value="yourEmail"></parameter>-->
+    <!--    <parameter name="password" value="yourEmailPassword"></parameter>-->
 
     <test name="Amazon Pages">
 

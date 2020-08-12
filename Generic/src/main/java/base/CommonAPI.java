@@ -1,6 +1,8 @@
-package Base;
+package base;
 
-import Utilities.TimeOutSettings;
+import utilities.TimeOutSettings;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -14,12 +16,12 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class CommonAPI {
@@ -119,12 +121,11 @@ public class CommonAPI {
 
         for (WebElement element : elementList) {
             String value = element.getAttribute(attribute);
-            if (value.equalsIgnoreCase(myAttributeValue)) {
-                element.click();
-                break;
+            if(value.contains(myAttributeValue)) {
+                    element.click();
+                    break;
             }
         }
-
     }
 
     public static List getListOfStringText(List<WebElement> elementList, String nameOfList) {
@@ -132,6 +133,7 @@ public class CommonAPI {
         for (WebElement element : elementList) {
             String elementText = element.getText();
             System.out.println(elementText);
+            System.out.println();
             elementTextList.add(elementText);
         }
         return elementTextList;
@@ -217,12 +219,30 @@ public class CommonAPI {
         for (String childWindow : allWindows) {
             if (!parentWindow.equalsIgnoreCase(childWindow)) {
                 driver.switchTo().window(childWindow);
-                driver.getTitle();
+                System.out.println(driver.getTitle());
                 driver.close();
             }
         }
         driver.switchTo().window(parentWindow);
     }
+
+    public static String switchWindowGetTitle(){
+        String parentWindow = driver.getWindowHandle();
+        Set<String> allWindows = driver.getWindowHandles();
+        String childWindowURL="";
+        int windowsCount = allWindows.size();
+        System.out.println("Total amount of windows are " + windowsCount + ".");
+        for (String childWindow : allWindows) {
+            if (!parentWindow.equalsIgnoreCase(childWindow)) {
+                driver.switchTo().window(childWindow);
+                childWindowURL=driver.getCurrentUrl();
+                driver.close();
+            }
+        }
+        driver.switchTo().window(parentWindow);
+        return childWindowURL;
+    }
+
     public static void clearInputField(WebElement element){
         element.clear();
     }
@@ -267,7 +287,52 @@ public class CommonAPI {
         executor.executeScript("arguments[0].click();",element);
     }
 
+    public static void switchToTabsOfDiffLinks(List<WebElement> allLinks) {
+        for (WebElement newLink : allLinks) {
+            String openTabs = Keys.chord(Keys.CONTROL, Keys.ENTER);
+            newLink.sendKeys(openTabs);;
+        }
+        closePopupWindows();
+    }
+
+    public static boolean isElementSelected(WebElement element){
+       return element.isSelected();
+    }
+
+    public static boolean isElementEnabled(WebElement element){
+        return element.isEnabled();
+    }
+
+    public static boolean isElementDisplayed(WebElement element){
+        return element.isDisplayed();
+    }
+
+    public static String convertToString(String st) {
+        String splitString = "";
+        splitString = StringUtils.join(StringUtils.splitByCharacterTypeCamelCase(st), ' ');
+        return splitString;
+    }
+
+    public static String captureScreenshot(String screenshotName, WebDriver driver) {
+        DateFormat df = new SimpleDateFormat("(MM.dd.yyyy-HH:mma)");
+        Date date = new Date();
+        df.format(date);
+
+        File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        String destPath=System.getProperty("user.dir") + "/screenshots/" + screenshotName + " " + df.format(date) + ".png";
+        try {
+            FileUtils.copyFile(source, new File(destPath));
+            System.out.println("Screenshot captured");
+            return  destPath;
+        } catch (Exception e) {
+            System.out.println("Exception while taking screenshot " + e.getMessage());
+        }
+        return destPath;
+    }
 }
+
+
+
 
 
 
@@ -308,3 +373,6 @@ public class CommonAPI {
 //        return selectList;
 //    }
 
+//        Actions act = new Actions(driver);
+
+//act.moveToElement(newLink).sendKeys(openTabs).build().perform();

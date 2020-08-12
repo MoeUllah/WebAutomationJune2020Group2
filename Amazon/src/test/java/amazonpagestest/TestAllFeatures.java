@@ -1,9 +1,8 @@
 package amazonpagestest;
 
-import Base.CommonAPI;
+import base.CommonAPI;
 import features.AllFunctionality;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.io.IOException;

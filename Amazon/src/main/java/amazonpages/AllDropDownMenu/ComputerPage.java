@@ -1,6 +1,6 @@
 package amazonpages.AllDropDownMenu;
 
-import Base.CommonAPI;
+import base.CommonAPI;
 import amazonpages.LaptopsPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
