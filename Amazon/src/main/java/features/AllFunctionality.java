@@ -14,6 +14,8 @@ import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import reporting.ExtentReportListener;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -112,6 +114,7 @@ public class AllFunctionality {
         String [] groceries=fetchGroceryList.getDataFromExcelFile();
         homePage= PageFactory.initElements(driver,HomePage.class);
         for(int i=1;i<groceries.length;i++) {
+            ExtentReportListener.log(getClass().getSimpleName() + ": " + CommonAPI.convertToString(new Object(){}.getClass().getEnclosingMethod().getName()));
             String grocery=groceries[i];
             HomePage.searchBarWebElement.clear();
             searchResultPage= homePage.enterSearchQueryOnSearchBar(driver,grocery);
@@ -354,7 +357,9 @@ public class AllFunctionality {
     }
 
 
-
+    public void testFail(){
+        Assert.assertTrue(true);
+    }
 
 
     public void runAllTheFeatureTest(WebDriver driver) throws InterruptedException, IOException {
@@ -445,6 +450,9 @@ public class AllFunctionality {
                 break;
             case "editCart":
                 editCart(driver);
+                break;
+            case "testFail":
+                testFail();
                 break;
             default:
                 throw new InvalidArgumentException("Invalid features choice");

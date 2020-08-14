@@ -1,5 +1,8 @@
 package base;
 
+import org.testng.ITestResult;
+import reporting.CustomHtmlReport;
+import reporting.ExtentReportListener;
 import utilities.TimeOutSettings;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +19,9 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -31,6 +36,7 @@ public class CommonAPI {
     public String sauceLabsAccessKey = "";
     public static WebDriver driver = null;
     public static String urlHome;
+    public int indexSI=0;
 
     @Parameters({"useCloudEnv","cloudEnvName","url","os","os_version","browserName","browserVersion"})
     @BeforeMethod
@@ -104,7 +110,8 @@ public class CommonAPI {
 
 
     @AfterMethod
-    public void closeBrowser() {
+    public void closeBrowser(ITestResult result) throws IOException {
+        CustomHtmlReport.createCustomHtmlReport(result);
         driver.quit();
     }
 
@@ -313,13 +320,22 @@ public class CommonAPI {
         return splitString;
     }
 
-    public static String captureScreenshot(String screenshotName, WebDriver driver) {
-        DateFormat df = new SimpleDateFormat("(MM.dd.yyyy-HH:mma)");
+    public static String captureScreenshot(String screenshotName, WebDriver driver)  {
+        DateFormat df = new SimpleDateFormat("-yyyy.MM.dd.HH.mm.ss");
         Date date = new Date();
         df.format(date);
 
         File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        String destPath=System.getProperty("user.dir") + "/screenshots/" + screenshotName + " " + df.format(date) + ".png";
+//        byte[] fileContent = new byte[0];
+//        try {
+//            fileContent = FileUtils.readFileToByteArray(source);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        String Base64StringofScreenshot = "data:image/png;base64,"+Base64.getEncoder().encodeToString(fileContent);
+
+        String destPath=System.getProperty("user.dir") + "\\screenshots\\" + screenshotName + df.format(date) + ".png";
         try {
             FileUtils.copyFile(source, new File(destPath));
             System.out.println("Screenshot captured");
@@ -328,6 +344,12 @@ public class CommonAPI {
             System.out.println("Exception while taking screenshot " + e.getMessage());
         }
         return destPath;
+    }
+
+    public static Date getTime(long millis) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(millis);
+        return calendar.getTime();
     }
 }
 

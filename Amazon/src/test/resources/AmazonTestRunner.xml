@@ -6,6 +6,7 @@
     <listeners>
         <listener class-name="reporting.ExtentReportListener"/>
         <listener class-name="retryanalyzer.RetryListenersClass"/>
+        <listener class-name="reporting.CustomReporterListener"/>
     </listeners>
 
     <parameter name="useCloudEnv" value="false"></parameter>
@@ -13,7 +14,7 @@
     <parameter name="url" value="http://amazon.com"></parameter>
     <parameter name="os" value="Windows"></parameter>
     <parameter name="os_version" value="10"></parameter>
-    <parameter name="browserName" value="chrome"></parameter>
+    <parameter name="browserName" value="firefox"></parameter>
     <parameter name="browserVersion" value="84.0"></parameter>
     <!--    <parameter name="selectionValue" value="Women"></parameter>-->
     <!--    <parameter name="email" value="yourEmail"></parameter>-->

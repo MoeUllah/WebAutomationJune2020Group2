@@ -3,23 +3,30 @@ package reporting;
 import base.CommonAPI;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.Markup;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import org.testng.Reporter;
 
 import java.util.Arrays;
+
 
 public class ExtentReportListener extends CommonAPI implements ITestListener {
 
     ExtentReports extent =ExtentReportManager.extentReportGenerator();
     ExtentTest test;
     private static ThreadLocal<ExtentTest> extentTest= new ThreadLocal<>();
+    private ITestResult result;
 
     public void onTestStart(ITestResult result) {
+        this.result=result;
         String className= result.getTestClass().getRealClass().getSimpleName();
         String methodName=result.getMethod().getMethodName();
         test=extent.createTest(className + ": " + convertToString(methodName));
@@ -32,20 +39,20 @@ public class ExtentReportListener extends CommonAPI implements ITestListener {
         String logText="<b>"+className + ": " + convertToString(methodName.toLowerCase())+" was passed."+"</b>";
         Markup markup=MarkupHelper.createLabel(logText, ExtentColor.GREEN);
         extentTest.get().pass(markup);
-        extentTest.get().log(Status.PASS,"The test was successful.");
     }
 
     public void onTestFailure(ITestResult result) {
 
         String className= result.getTestClass().getRealClass().getSimpleName();
         String methodName=result.getMethod().getMethodName();
-        String exceptionMessage= Arrays.toString(result.getThrowable().getStackTrace());
-        extentTest.get().fail("<details>" + "<summary>" + "<b>" + "<font color=" + "red>" + "Exception Occured:Click to see"
-                + "</font>" + "</b >" + "</summary>" +exceptionMessage.replaceAll(",", "<br>")+"</details>"+" \n");
-        String failureLogg="<b>"+className + ": " + convertToString(methodName.toLowerCase())+" has failed."+"</b>";
-        Markup markup = MarkupHelper.createLabel(failureLogg, ExtentColor.RED);
-        extentTest.get().log(Status.FAIL, markup);
-//        extentTest.get().fail(result.getThrowable());
+        String screenshotPath=captureScreenshot(methodName,driver);
+        String exceptionMessage= result.getThrowable().toString() +", "+ Arrays.toString(result.getThrowable().getStackTrace());
+
+        extentTest.get().fail("<details>" + "<summary>" + "<b>" + "<mark1>" + className + ": " + convertToString(methodName.toLowerCase()) + " has failed" + "<br>" +
+                        "Exception/Error Occured: Click to see" + "</mark1>" + "</b >" + "</summary>" + exceptionMessage.replaceAll(",", "<br>") +
+                        "</details>" + " \n" + "<br>", MediaEntityBuilder.createScreenCaptureFromBase64String(screenshotPath).build());
+
+
 //        Object testObject= result.getInstance();
 //        Class testClass=result.getTestClass().getRealClass();
 //        WebDriver driver = null;
@@ -54,19 +61,18 @@ public class ExtentReportListener extends CommonAPI implements ITestListener {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        extentTest.get().addScreenCaptureFromPath(captureScreenshot(methodName,driver),className + ": " + convertToString(methodName));
-
     }
 
     public void onTestSkipped(ITestResult result) {
         String className= result.getTestClass().getRealClass().getSimpleName();
         String methodName=result.getMethod().getMethodName();
-        String logText="<b>"+className + ": " + convertToString(methodName.toLowerCase())+" was skipped."+"</b>";
+        String skipCause=result.getSkipCausedBy().toString();
+        String exceptionMessage= result.getThrowable().toString() +", "+ Arrays.toString(result.getThrowable().getStackTrace());
+        String logText="<details>" + "<summary>" + "<b>" +className + ": " + convertToString(methodName.toLowerCase())+" was skipped"+"<br>"
+                + "</b >" + "</summary>" +exceptionMessage.replaceAll(",", "<br>")+"</details>"+"<br>"+skipCause+ "\n";
         Markup markup=MarkupHelper.createLabel(logText, ExtentColor.ORANGE);
         extentTest.get().skip(markup);
-        extentTest.get().log(Status.SKIP,"The test was skipped");
-        extentTest.get().skip((Markup) result.getSkipCausedBy());
-        extentTest.get().skip(result.getThrowable());
+
 ;    }
 
     public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
@@ -86,4 +92,26 @@ public class ExtentReportListener extends CommonAPI implements ITestListener {
         extent.flush();
         }
     }
+
+    public static void log(final String message){
+        Reporter.log(message,true);
+        extentTest.get().log(Status.INFO.INFO, message + "<br>");
+
+    }
+    public static void log(final StringUtils message){
+        Reporter.log(message + "<br>",true);
+        extentTest.get().log(Status.INFO.INFO, message + "<br>");
+    }
+    public static void log(final String message, WebDriver driver){
+        Reporter.log(message,true);
+        extentTest.get().log(Status.INFO.INFO, message + "<br>");
+    }
+
 }
+
+//        extentTest.get().pass(String.valueOf(result.getMethod().getSuccessPercentage()));
+//        extentTest.get().info(String.valueOf(CommonAPI.getTime(result.getStartMillis())));
+//        extentTest.get().info(String.valueOf(CommonAPI.getTime(result.getEndMillis())));
+//        extentTest.get().getExtent().addTestRunnerOutput(String.valueOf(result.getMethod().getSuccessPercentage()));
+
+//TestLogger.log(getClass().getSimpleName() + ": " + CommonAPI.convertToString(new Object(){}.getClass().getEnclosingMethod().getName()));
